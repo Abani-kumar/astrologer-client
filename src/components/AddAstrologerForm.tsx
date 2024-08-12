@@ -14,7 +14,7 @@ import ImageInput from "./ImageInput";
 import CheckBoxComponent from "./CheckBoxComponent";
 import { astrologerData, ImageFile } from "..";
 import validationSchema from "../utils/yupValidation";
-import { addAstrologerData } from "../services/service";
+import { addAstrologerData, updateAstrologer } from "../services/service";
 
 const AddAstrologerForm = ({
   addAstrologer,
@@ -43,10 +43,24 @@ const AddAstrologerForm = ({
   };
   const updateAstrologerHandler = async () => {
     try {
-    } catch (error) {}
+      setLoading(true);
+      let response = await updateAstrologer(astrologer);
+      if (resetHandler) {
+        resetHandler();
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
   const formHandle = (values: any) => {
-    addAstrologerHandler(values);
+    if(addAstrologer){
+      addAstrologerHandler(values);
+    }
+    else{
+      updateAstrologerHandler();
+    }
   };
 
   const initialValues: astrologerData = {
